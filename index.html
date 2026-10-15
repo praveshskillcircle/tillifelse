@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Assessment — Fundamentals, Data Types & Conditionals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #818cf8;
+  --secondary: #0f172a;
+  --accent: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #ef4444;
+  --bg: #090d16;
+  --card-bg: #111827;
+  --card-subtle: #1a2234;
+  --border: #26334d;
+  --border-light: #374151;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --code-bg: #0b1120;
+  --radius: 12px;
+  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 40%);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+/* Header Styles */
+.header-hero {
+  background: linear-gradient(135deg, #1e1e38 0%, #0f172a 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 16px;
+  padding: 2.25rem 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 30px -10px rgba(0,0,0,0.5);
+}
+.header-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, #6366f1, #10b981, #f59e0b);
+}
+.header-hero h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #ffffff, #c7d2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header-hero p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+/* Card Styles */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Form inputs */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+.form-grid .full { grid-column: 1 / -1; }
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+input[type=text], input[type=email], input[type=tel] {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s ease;
+}
+input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Badges & Banners */
+.banner {
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.45;
+}
+.banner-warn {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+.banner-info {
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-blue { background: rgba(99, 102, 241, 0.2); color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.4); }
+.badge-green { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+.badge-amber { background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.4); }
+.badge-purple { background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+.btn-block { width: 100%; }
+
+/* Question Blocks */
+.q-block, .practice-q {
+  margin-bottom: 1.35rem;
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card-subtle);
+  transition: border-color 0.2s ease;
+}
+.q-block:hover, .practice-q:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+}
+.q-header-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.q-num {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary-light);
+}
+.q-text {
+  font-size: 0.96rem;
+  font-weight: 500;
+  color: var(--text-main);
+  margin-bottom: 0.9rem;
+  line-height: 1.6;
+}
+.code-block {
+  font-family: 'Fira Code', monospace;
+  background: #080d1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--primary);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  color: #38bdf8;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* MCQ Options */
+.options {
+  display: grid;
+  gap: 8px;
+}
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.92rem;
+  color: var(--text-main);
+}
+.opt:hover {
+  border-color: var(--primary);
+  background: rgba(99, 102, 241, 0.08);
+}
+.opt input[type=radio] {
+  margin-top: 3px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+.opt.selected {
+  border-color: var(--primary);
+  background: rgba(99, 102, 241, 0.16);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+/* Practice Textarea */
+.practice-q textarea {
+  width: 100%;
+  margin-top: 0.6rem;
+  padding: 12px;
+  background: #070b14;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: 'Fira Code', monospace;
+  color: #38bdf8;
+  resize: vertical;
+  min-height: 90px;
+  outline: none;
+  line-height: 1.45;
+  transition: border-color 0.2s ease;
+}
+.practice-q textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* Floating Status Bar & Timer */
+.floating-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(17, 24, 39, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  padding: 10px 22px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 999;
+}
+.floating-timer {
+  font-family: 'Fira Code', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.timer-urgent {
+  color: var(--accent-rose) !important;
+  animation: pulse 1s infinite alternate;
+}
+@keyframes pulse { from { opacity: 1; } to { opacity: 0.5; } }
+
+.mini-progress-text {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Top Progress Bar */
+.progress-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  padding: 12px 0 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.progress-bar {
+  background: var(--card-subtle);
+  border-radius: 99px;
+  height: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.progress-fill {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* Results Screen */
+.score-hero {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+}
+.score-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border: 4px solid var(--primary);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+}
+.score-big {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+.score-out-of {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.75rem 0;
+}
+.score-item {
+  background: var(--card-subtle);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem;
+  text-align: center;
+}
+.score-item .val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+.score-item .lbl {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Review Answers */
+.correct-ans { color: #4ade80; font-weight: 600; }
+.wrong-ans { color: #f87171; font-weight: 600; }
+.ans-reveal {
+  background: rgba(16, 185, 129, 0.1);
+  border-left: 3px solid #10b981;
+  padding: 8px 12px;
+  margin-top: 8px;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.86rem;
+  color: #a7f3d0;
+}
+
+/* Overlays */
+.saving-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 22, 0.95);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  gap: 16px;
+}
+.saving-overlay.show { display: flex; }
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(99, 102, 241, 0.2);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Print & Security */
+.hidden { display: none !important; }
+.no-select { user-select: none; -webkit-user-select: none; }
+
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .score-grid { grid-template-columns: 1fr; }
+  .floating-bar { width: 90%; justify-content: space-between; }
+}
+
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  .floating-bar, .progress-container, .btn, .no-print { display: none !important; }
+  .card { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; box-shadow: none !important; }
+  .score-circle { border-color: #333 !important; }
+  .score-big { color: #000 !important; }
+  .q-block { background: #fafafa !important; border-color: #ddd !important; page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="saving-overlay" id="saving-overlay">
+  <div class="spinner"></div>
+  <div id="saving-msg" style="font-size: 1.1rem; color: #c7d2fe; font-weight: 500;">Saving your assessment to cloud records...</div>
+</div>
+
+<div class="container no-select" id="app">
+
+  <!-- ==================== REGISTRATION SCREEN ==================== -->
+  <div id="screen-reg">
+    <div class="header-hero">
+      <h1>🐍 Python Comprehensive Assessment</h1>
+      <p>A balanced evaluation covering Python background & origins, variables, data types (numbers, strings, lists, tuples, sets, dictionaries), operators, and conditional branching.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header-row">
+        <div class="section-title">Student Registration</div>
+        <span class="badge badge-purple">Assessment Portal</span>
+      </div>
+
+      <div class="banner banner-warn">
+        <span>🚨</span>
+        <div>
+          <strong>STRICT TAB SWITCH RULE:</strong> If you switch to another tab or minimize the browser window, <strong>all your answers will be automatically swept/deleted and your 60-minute test will restart from the beginning!</strong> Keep this window active at all times.
+        </div>
+      </div>
+
+      <div class="banner banner-info">
+        <span>📋</span>
+        <div>
+          <strong>Test Format:</strong> 50 Multiple Choice Questions (50 Marks) + 50 Practice / Output Questions (50 Marks) = <strong>100 Marks Total</strong> &nbsp;|&nbsp; ⏱ <strong>60 Minutes</strong>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="full">
+          <label>Full Name *</label>
+          <input type="text" id="reg-name" placeholder="Enter your full name" autocomplete="name" required />
+        </div>
+        <div>
+          <label>Email Address *</label>
+          <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" required />
+        </div>
+        <div>
+          <label>Phone Number *</label>
+          <input type="tel" id="reg-phone" placeholder="+91 XXXXXXXXXX" autocomplete="tel" required />
+        </div>
+      </div>
+
+      <br>
+      <button class="btn btn-primary btn-block" onclick="startAssessment()">
+        Begin Assessment (60 Mins) →
+      </button>
+    </div>
+
+    <div style="text-align: center; font-size: 0.8rem; color: var(--text-faint); margin-top: 1rem;">
+      Powered by EntryGlobe · entryglobe@gmail.com
+    </div>
+  </div>
+
+
+  <!-- ==================== TEST SCREEN ==================== -->
+  <div id="screen-assessment" class="hidden">
+    
+    <!-- Top sticky progress bar -->
+    <div class="progress-container">
+      <div class="progress-meta">
+        <span id="student-info-header">Candidate: ...</span>
+        <span id="progress-percent">0 / 100 Answered (0%)</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Section A: MCQs -->
+    <div class="card">
+      <div class="card-header-row">
+        <div class="section-title">Section A — Multiple Choice Questions</div>
+        <span class="badge badge-blue">50 Questions · 1 Mark Each</span>
+      </div>
+      <div id="mcq-container"></div>
+    </div>
+
+    <!-- Section B: Practice -->
+    <div class="card">
+      <div class="card-header-row">
+        <div class="section-title">Section B — Practice & Output Questions</div>
+        <span class="badge badge-amber">50 Questions · 1 Mark Each</span>
+      </div>
+      <div id="practice-container"></div>
+    </div>
+
+    <!-- Submission Card -->
+    <div class="card" style="text-align: center; padding: 2.5rem 1.5rem;">
+      <h3 style="font-family:'Outfit',sans-serif; margin-bottom: 0.5rem; font-size: 1.3rem;">Ready to Submit?</h3>
+      <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.5rem; max-width: 500px; margin-left:auto; margin-right:auto;">
+        Please review your answers before submitting. Answers cannot be changed once submitted.
+      </p>
+      <button class="btn btn-primary" style="padding: 14px 44px; font-size: 1.05rem;" onclick="submitAssessment()">
+        Submit Assessment
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- ==================== RESULTS SCREEN ==================== -->
+  <div id="screen-result" class="hidden">
+    <div class="header-hero">
+      <h1>📊 Assessment Results</h1>
+      <p id="result-student-info">Candidate Result Overview</p>
+    </div>
+
+    <div class="card">
+      <div class="score-hero">
+        <div class="score-circle">
+          <div class="score-big" id="final-score">0</div>
+          <div class="score-out-of">/ 100 MARKS</div>
+        </div>
+        <h2 id="grade-title" style="font-family:'Outfit',sans-serif; font-size:1.5rem; margin-bottom: 0.35rem;">Grade: -</h2>
+        <p id="grade-msg" style="color: var(--text-muted); max-width: 550px; margin: 0 auto; font-size: 0.95rem;"></p>
+
+        <div class="score-grid">
+          <div class="score-item">
+            <div class="val" id="mcq-score-display">0 / 50</div>
+            <div class="lbl">MCQ Score</div>
+          </div>
+          <div class="score-item">
+            <div class="val" id="prac-score-display">0 / 50</div>
+            <div class="lbl">Practice Score</div>
+          </div>
+          <div class="score-item">
+            <div class="val" id="time-taken-display">00m 00s</div>
+            <div class="lbl">Time Taken</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 1.5rem;">
+          <button class="btn btn-primary" onclick="window.print()">🖨️ Print / Save Result Card</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review Section -->
+    <div class="card">
+      <div class="card-header-row">
+        <div class="section-title">MCQ Review — Answers & Explanations</div>
+        <span class="badge badge-blue">Detailed Review</span>
+      </div>
+      <div id="mcq-review-list"></div>
+    </div>
+
+    <div style="text-align: center; font-size: 0.8rem; color: var(--text-faint); margin-top: 1.5rem;">
+      Powered by EntryGlobe · entryglobe@gmail.com
+    </div>
+  </div>
+
+</div>
+
+<!-- Floating Time & Status Bar -->
+<div class="floating-bar hidden" id="floating-bar">
+  <div class="floating-timer" id="timer-display">
+    <span>⏱</span> <span id="timer-val">60:00</span>
+  </div>
+  <div class="mini-progress-text" id="floating-count">
+    0 / 100 Answered
+  </div>
+  <button class="btn btn-primary" style="padding: 6px 16px; font-size: 0.82rem; border-radius: 20px;" onclick="submitAssessment()">
+    Submit
+  </button>
+</div>
+
+<script>
+// Target Google Sheet Web App URL
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxTW3KIiAwnMdBQB2Ogu4AUdSWhywStPUlKCUAMwfss6iWLcfgdARYE3AzkZo0reQdp/exec";
+
+/* ==========================================================================
+   50 MCQs — Rich, Balanced Mix (Origins, Variables, Data Types, Methods, Logic)
+   ========================================================================== */
+const MCQ = [
+  {
+    q: "Who is the original creator and designer of the Python programming language?",
+    opts: ["Dennis Ritchie", "Guido van Rossum", "James Gosling", "Bjarne Stroustrup"],
+    ans: 1,
+    explain: "Guido van Rossum conceptualized and developed Python in the late 1980s."
+  },
+  {
+    q: "From which source did Python get its name?",
+    opts: ["A famous genus of constrictor snakes", "BBC comedy series 'Monty Python's Flying Circus'", "An ancient Greek mythical creature", "The author's pet snake"],
+    ans: 1,
+    explain: "Guido van Rossum was a fan of the comedy series 'Monty Python's Flying Circus'."
+  },
+  {
+    q: "In what year was the first public version of Python (0.9.0) released?",
+    opts: ["1985", "1991", "1995", "2000"],
+    ans: 1,
+    explain: "Python 0.9.0 was first published in February 1991."
+  },
+  {
+    q: "Python was designed as a direct successor to which educational programming language?",
+    opts: ["ABC Language", "BASIC", "Pascal", "Simula"],
+    ans: 0,
+    explain: "Python was created to overcome limitations of the ABC language while preserving its elegance."
+  },
+  {
+    q: "Which of the following is an INVALID variable name in Python?",
+    opts: ["_user_score", "total_sum", "2nd_rank", "dataValue"],
+    ans: 2,
+    explain: "Variable identifiers cannot begin with a number/digit (e.g., 2nd_rank)."
+  },
+  {
+    q: "What will be the output of:\nx = 10\ny = x\nx = 25\nprint(y)",
+    opts: ["10", "25", "Error", "None"],
+    ans: 0,
+    explain: "Integers are immutable. Reassigning x = 25 does not alter y, which continues referencing 10."
+  },
+  {
+    q: "What will be the output of:\na, b = 15, 30\na, b = b, a\nprint(a, b)",
+    opts: ["15 30", "30 15", "(30, 15)", "Error"],
+    ans: 1,
+    explain: "Python swaps values cleanly using tuple packing and unpacking, making a = 30 and b = 15."
+  },
+  {
+    q: "Which of the following is a reserved Python keyword and cannot be used as a variable name?",
+    opts: ["total", "string", "pass", "value"],
+    ans: 2,
+    explain: "'pass' is a reserved Python keyword used as a null statement placeholder."
+  },
+  {
+    q: "What will be the output of:\nprint(19 // 4, 19 % 4)",
+    opts: ["4 3", "4.75 3", "4 4", "3 4"],
+    ans: 0,
+    explain: "19 // 4 is floor division (4), and 19 % 4 is the remainder (3)."
+  },
+  {
+    q: "What will be the output of:\nprint(2 ** 3 ** 2)",
+    opts: ["64", "512", "12", "256"],
+    ans: 1,
+    explain: "Exponentiation (**) is right-associative: 3 ** 2 = 9, then 2 ** 9 = 512."
+  },
+  {
+    q: "What will be the output of:\nprint(type(5 / 2))",
+    opts: ["<class 'int'>", "<class 'float'>", "<class 'double'>", "<class 'number'>"],
+    ans: 1,
+    explain: "The standard division operator '/' in Python 3 always produces a float (2.5)."
+  },
+  {
+    q: "What will be the output of:\nprint(int('101', 2))",
+    opts: ["101", "5", "2", "ValueError"],
+    ans: 1,
+    explain: "The second parameter defines the base: binary '101' equals decimal 5."
+  },
+  {
+    q: "What will be the output of:\nprint(bool([]), bool('0'), bool(0))",
+    opts: ["False True False", "True True True", "False False False", "True False True"],
+    ans: 0,
+    explain: "Empty list [] is False, non-empty string '0' is True, and numeric 0 is False."
+  },
+  {
+    q: "What will be the output of:\ns = 'Python Programming'\nprint(s[7:14])",
+    opts: ["'Program'", "'Programmi'", "'rogram'", "'Programming'"],
+    ans: 0,
+    explain: "Slicing [7:14] captures characters from index 7 up to index 13: 'Program'."
+  },
+  {
+    q: "What will be the output of:\ns = 'hello world'\nprint(s.title())",
+    opts: ["'Hello World'", "'HELLO WORLD'", "'Hello world'", "'hello World'"],
+    ans: 0,
+    explain: ".title() capitalizes the first letter of each word in the string."
+  },
+  {
+    q: "What will be the output of:\ntext = '###Hello###'\nprint(text.strip('#'))",
+    opts: ["'Hello'", "'###Hello'", "'Hello###'", "Error"],
+    ans: 0,
+    explain: ".strip('#') strips all leading and trailing '#' characters from the string."
+  },
+  {
+    q: "What will be the output of:\ns = 'apple,banana,orange'\nprint(s.split(','))",
+    opts: ["['apple', 'banana', 'orange']", "('apple', 'banana', 'orange')", "'apple banana orange'", "Error"],
+    ans: 0,
+    explain: ".split(',') splits a string by comma delimiter and returns a list."
+  },
+  {
+    q: "What will be the output of:\ns = 'mississippi'\nprint(s.count('s'))",
+    opts: ["2", "3", "4", "5"],
+    ans: 2,
+    explain: ".count('s') counts occurrences of 's' in 'mississippi', which is 4."
+  },
+  {
+    q: "What will be the output of:\nnums = [10, 20, 30]\nnums.append([40, 50])\nprint(len(nums))",
+    opts: ["4", "5", "3", "Error"],
+    ans: 0,
+    explain: ".append() adds the entire list [40, 50] as a single nested element, giving length 4."
+  },
+  {
+    q: "What will be the output of:\nnums = [10, 20, 30, 40]\nval = nums.pop(1)\nprint(val, nums)",
+    opts: ["20 [10, 30, 40]", "10 [20, 30, 40]", "20 [10, 20, 30]", "40 [10, 20, 30]"],
+    ans: 0,
+    explain: ".pop(1) removes the element at index 1 (which is 20) and returns it."
+  },
+  {
+    q: "What will be the output of:\ncolors = ['red', 'blue']\ncolors.extend(['green', 'yellow'])\nprint(len(colors))",
+    opts: ["2", "3", "4", "Error"],
+    ans: 2,
+    explain: ".extend() unpacks and appends each element individually, increasing length to 4."
+  },
+  {
+    q: "What will be the output of:\nnums = [3, 1, 4, 1, 5, 9]\nprint(sorted(nums, reverse=True)[:3])",
+    opts: ["[9, 5, 4]", "[1, 1, 3]", "[9, 5, 5]", "[9, 4, 5]"],
+    ans: 0,
+    explain: "Sorted in descending order gives [9, 5, 4, 3, 1, 1]; the first three are [9, 5, 4]."
+  },
+  {
+    q: "What will be the output of:\nt = (1, [2, 3])\nt[1].append(4)\nprint(t)",
+    opts: ["(1, [2, 3, 4])", "TypeError", "(1, [2, 3])", "(1, 4)"],
+    ans: 0,
+    explain: "Although the tuple itself is immutable, the list inside it is mutable and can be appended."
+  },
+  {
+    q: "Which syntax creates a single-element tuple containing the string 'data'?",
+    opts: ["t = ('data',)", "t = ('data')", "t = tuple['data']", "t = ('data')*1"],
+    ans: 0,
+    explain: "A trailing comma is required to create a single-element tuple: ('data',)."
+  },
+  {
+    q: "What will be the output of:\nt = (10, 20, 30, 20, 40)\nprint(t.index(20))",
+    opts: ["0", "1", "3", "2"],
+    ans: 1,
+    explain: ".index(20) returns the first matching index of the value 20, which is index 1."
+  },
+  {
+    q: "What will be the output of:\ns = {1, 2, 3}\ns.add(2)\ns.add(4)\nprint(len(s))",
+    opts: ["3", "4", "5", "Error"],
+    ans: 1,
+    explain: "Sets contain only unique items; adding 2 does nothing, adding 4 increases length to 4."
+  },
+  {
+    q: "What will be the output of:\na = {1, 2, 3}\nb = {2, 3, 4}\nprint(a & b)",
+    opts: ["{1, 2, 3, 4}", "{2, 3}", "{1}", "{4}"],
+    ans: 1,
+    explain: "& is the set intersection operator; common elements are {2, 3}."
+  },
+  {
+    q: "Which statement properly creates an empty set?",
+    opts: ["s = {}", "s = set()", "s = []", "s = ()"],
+    ans: 1,
+    explain: "{} creates an empty dictionary. set() is required to create an empty set."
+  },
+  {
+    q: "What will be the output of:\nd = {'a': 100, 'b': 200}\nprint(d.get('c', 500))",
+    opts: ["None", "KeyError", "500", "0"],
+    ans: 2,
+    explain: ".get('c', 500) returns the fallback default value 500 when 'c' is absent."
+  },
+  {
+    q: "What happens when accessing a non-existent key with square brackets: d = {}; print(d['age'])?",
+    opts: ["KeyError", "None", "0", "False"],
+    ans: 0,
+    explain: "Accessing an absent key directly with square brackets raises a KeyError."
+  },
+  {
+    q: "What will be the output of:\nd = {'x': 1, 'y': 2}\nd['x'] = 10\nd['z'] = 30\nprint(len(d))",
+    opts: ["2", "3", "4", "Error"],
+    ans: 1,
+    explain: "d['x'] updates existing key 'x', and d['z'] adds a new key 'z', resulting in 3 keys."
+  },
+  {
+    q: "What will be the output of:\nperson = {'name': 'Bob', 'role': 'admin'}\nprint('admin' in person)",
+    opts: ["True", "False", "None", "Error"],
+    ans: 1,
+    explain: "The 'in' operator checks dictionary keys by default, not values. 'admin' is a value, so it returns False."
+  },
+  {
+    q: "What will be the output of:\nscore = 75\nif score >= 90:\n    result = 'A'\nelif score >= 70:\n    result = 'B'\nelif score >= 60:\n    result = 'C'\nelse:\n    result = 'F'\nprint(result)",
+    opts: ["A", "B", "C", "F"],
+    ans: 1,
+    explain: "75 is >= 70, so the first matching elif branch executes and assigns 'B'."
+  },
+  {
+    q: "What will be the output of:\nx = 12\nres = 'Even' if x % 2 == 0 else 'Odd'\nprint(res)",
+    opts: ["Even", "Odd", "True", "False"],
+    ans: 0,
+    explain: "12 % 2 == 0 is True, so the ternary expression assigns 'Even'."
+  },
+  {
+    q: "What will be the output of:\na = 0\nb = 10\nif a and b:\n    print('Both')\nelif a or b:\n    print('Either')\nelse:\n    print('Neither')",
+    opts: ["Both", "Either", "Neither", "None"],
+    ans: 1,
+    explain: "0 is falsy, so (a and b) is False. But (a or b) is True because b=10 is truthy; prints 'Either'."
+  },
+  {
+    q: "What will be the output of:\nitems = []\nif items:\n    print('Filled')\nelse:\n    print('Empty')",
+    opts: ["Filled", "Empty", "Error", "None"],
+    ans: 1,
+    explain: "An empty list [] evaluates to False in boolean context, so the else branch prints 'Empty'."
+  },
+  {
+    q: "What will be the output of:\nx = [1, 2, 3]\ny = [1, 2, 3]\nprint(x == y, x is y)",
+    opts: ["True False", "True True", "False False", "False True"],
+    ans: 0,
+    explain: "x == y is True (values are equal), but x is y is False (separate memory objects)."
+  },
+  {
+    q: "What will be the output of:\nprint(not (5 > 2 and 10 < 3))",
+    opts: ["True", "False", "1", "0"],
+    ans: 0,
+    explain: "5 > 2 is True; 10 < 3 is False. True and False is False. not False is True."
+  },
+  {
+    q: "What will be the output of:\ns = 'Python'\nprint(s[::-1])",
+    opts: ["'nohtyP'", "'Python'", "'P'", "'n'"],
+    ans: 0,
+    explain: "A slice with step -1 reverses the entire string: 'nohtyP'."
+  },
+  {
+    q: "Python is dynamically typed. What does this mean?",
+    opts: ["Variable types are determined automatically at runtime", "Variables can never change type once initialized", "All variables must be strings", "Code must be pre-compiled to assembly"],
+    ans: 0,
+    explain: "In dynamically-typed languages, variables are bound to objects whose types are checked at runtime."
+  },
+  {
+    q: "What will be the output of:\nx = 10\nx += 5 * 2\nprint(x)",
+    opts: ["30", "20", "25", "15"],
+    ans: 1,
+    explain: "Multiplication precedes addition: 5 * 2 = 10; then x += 10 makes x equal 20."
+  },
+  {
+    q: "What will be the output of:\nprint(type(None))",
+    opts: ["<class 'NoneType'>", "<class 'null'>", "<class 'void'>", "<class 'None'>"],
+    ans: 0,
+    explain: "None is a singleton object belonging to <class 'NoneType'>."
+  },
+  {
+    q: "What will be the output of:\nletters = ['a', 'b', 'c', 'd']\nletters.reverse()\nprint(letters[0])",
+    opts: ["'a'", "'d'", "'b'", "'c'"],
+    ans: 1,
+    explain: "letters.reverse() reverses the list in place; the new first element at index 0 is 'd'."
+  },
+  {
+    q: "What will be the output of:\ns = {10, 20, 30}\ns.discard(99)\nprint(len(s))",
+    opts: ["3", "KeyError", "2", "4"],
+    ans: 0,
+    explain: ".discard() removes an element if present, but does nothing and raises no error if absent."
+  },
+  {
+    q: "What will be the output of:\nd = {'a': 1, 'b': 2}\nval = d.pop('a')\nprint(val, 'a' in d)",
+    opts: ["1 False", "1 True", "2 False", "KeyError"],
+    ans: 0,
+    explain: ".pop('a') removes key 'a' and returns its value 1; key 'a' is no longer in d."
+  },
+  {
+    q: "What will be the output of:\nval = 15\nif 10 <= val <= 20:\n    print('In Range')\nelse:\n    print('Out')",
+    opts: ["In Range", "Out", "Error", "None"],
+    ans: 0,
+    explain: "Python supports chained comparisons: 10 <= 15 <= 20 evaluates to True."
+  },
+  {
+    q: "What happens when running:\nword = 'hello'\nword[0] = 'H'",
+    opts: ["TypeError: 'str' object does not support item assignment", "word becomes 'Hello'", "word becomes 'Hhello'", "ValueError"],
+    ans: 0,
+    explain: "Strings are immutable in Python; direct character reassignment raises a TypeError."
+  },
+  {
+    q: "In which year was Python 3.0 officially released, rectifying legacy design flaws?",
+    opts: ["2008", "1995", "2015", "2000"],
+    ans: 0,
+    explain: "Python 3.0 was released in December 2008."
+  },
+  {
+    q: "What will be the output of:\nx = 5\nif x < 10:\n    if x > 2:\n        print('Med')\n    else:\n        print('Low')\nelse:\n    print('High')",
+    opts: ["Med", "Low", "High", "None"],
+    ans: 0,
+    explain: "x is 5: 5 < 10 is True, and 5 > 2 is True, so it prints 'Med'."
+  },
+  {
+    q: "What will be the output of:\nprint(bool('False'), bool(''))",
+    opts: ["True False", "False False", "True True", "False True"],
+    ans: 0,
+    explain: "'False' is a non-empty string, so bool('False') is True; '' is an empty string, so it evaluates to False."
+  }
+];
+
+/* ==========================================================================
+   50 PRACTICE QUESTIONS — Code, Outputs, Methods, Data Types, Logic
+   ========================================================================== */
+const PRACTICE = [
+  {
+    q: "Who invented the Python programming language, in which year was version 0.9.0 released, and which language was it designed to succeed?"
+  },
+  {
+    q: "Explain why Python was named 'Python'. Does it have any relation to the reptile serpent?"
+  },
+  {
+    q: "What is the fundamental difference between a statically-typed language (like C++/Java) and a dynamically-typed language like Python?"
+  },
+  {
+    q: "Explain what happens in memory when executing:\nx = 10\ny = x\nx = 20\nWhat are the final values of x and y?"
+  },
+  {
+    q: "Write a single line of Python code to swap the values of two variables a = 45 and b = 90 without using any temporary variable."
+  },
+  {
+    q: "What will be the output of:\na = b = c = [1, 2]\na.append(3)\nprint(b)\nExplain why b is affected."
+  },
+  {
+    q: "What will be the output of:\nprint(23 // 5, 23 % 5)\nExplain what // and % calculate."
+  },
+  {
+    q: "What will be the output of:\nprint(2 ** 3 ** 2)\nExplain the operator associativity for **."
+  },
+  {
+    q: "Write code to convert the string '100' into an integer and multiply it by 5. Print the result and its type()."
+  },
+  {
+    q: "What will be the output of:\nprint(bool(0), bool(0.0), bool(''), bool(' '), bool([]))\nExplain why ' ' (a space string) evaluates to True."
+  },
+  {
+    q: "What will be the output of:\nword = 'Engineering'\nprint(word[0:4], word[-4:])"
+  },
+  {
+    q: "What will be the output of:\ntext = '   python data science   '\nprint(text.strip().upper())"
+  },
+  {
+    q: "What will be the output of:\ns = 'banana'\nprint(s.replace('a', 'o', 2))\nExplain what the 3rd parameter 2 does."
+  },
+  {
+    q: "What will be the output of:\nraw = 'red;green;blue;yellow'\ncolors = raw.split(';')\nprint(colors, len(colors))"
+  },
+  {
+    q: "What will be the output of:\ns = 'mississippi'\nprint(s.find('ss'), s.count('s'))"
+  },
+  {
+    q: "Given nums = [10, 20, 30], show the difference in output between nums.append([40, 50]) versus nums.extend([40, 50])."
+  },
+  {
+    q: "What will be the output of:\nitems = ['a', 'b', 'c', 'd']\nval = items.pop(1)\nitems.insert(2, 'x')\nprint(val, items)"
+  },
+  {
+    q: "What will be the output of:\nnums = [15, 3, 9, 22, 7]\nnums.sort(reverse=True)\nprint(nums)"
+  },
+  {
+    q: "What will be the output of:\narr = [10, 20, 30, 40, 50, 60]\nprint(arr[1:5:2])\nExplain how step slicing works."
+  },
+  {
+    q: "Why are strings and tuples considered immutable in Python? Write a short line of code that demonstrates the TypeError raised when attempting to mutate a string."
+  },
+  {
+    q: "What will be the output of:\nt = (10, 20, 30, 20, 40)\nprint(t.count(20), t.index(30))"
+  },
+  {
+    q: "How do you create a single-element tuple containing the integer 42? Demonstrate what happens if you omit the trailing comma."
+  },
+  {
+    q: "What will be the output of:\nt = (1, [10, 20])\nt[1].append(30)\nprint(t)\nExplain why this mutation is allowed."
+  },
+  {
+    q: "What will be the output of:\ns = {1, 2, 2, 3, 4, 4, 4}\nprint(s, len(s))"
+  },
+  {
+    q: "How do you initialize an empty set vs an empty dictionary in Python? Write code showing the type() of both."
+  },
+  {
+    q: "What will be the output of:\nset1 = {1, 2, 3, 4}\nset2 = {3, 4, 5, 6}\nprint('Union:', set1 | set2)\nprint('Intersection:', set1 & set2)\nprint('Difference:', set1 - set2)"
+  },
+  {
+    q: "What is the difference between set.remove(x) and set.discard(x) when element x is not present in the set?"
+  },
+  {
+    q: "Create a dictionary employee with keys 'name': 'Sarah', 'salary': 75000, and 'dept': 'IT'. Write code to print all keys and all values separately."
+  },
+  {
+    q: "What will be the output of:\ndata = {'x': 10, 'y': 20}\nprint(data.get('z', -1))\nprint(data.get('x', -1))"
+  },
+  {
+    q: "What will be the output of:\ninventory = {'apples': 50, 'bananas': 30}\ninventory['oranges'] = 40\ninventory['apples'] = 65\nprint(inventory)"
+  },
+  {
+    q: "What will be the output of:\nscores = {'math': 90, 'science': 85}\nremoved = scores.pop('math')\nprint(removed, scores)"
+  },
+  {
+    q: "What will be the output of:\nx = 10\nx += 5\nx *= 2\nx -= 6\nprint(x)"
+  },
+  {
+    q: "Write an if-elif-else block that takes an integer temp = 28 and prints:\n- 'Cold' if temp < 15\n- 'Warm' if temp between 15 and 30 inclusive\n- 'Hot' if temp > 30"
+  },
+  {
+    q: "What will be the output of:\nn = 27\nif n % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')"
+  },
+  {
+    q: "Rewrite the following if-else code into a single-line ternary statement:\nif age >= 18:\n    status = 'Adult'\nelse:\n    status = 'Minor'"
+  },
+  {
+    q: "What will be the output of:\na = [1, 2]\nb = [1, 2]\nprint(a == b)\nprint(a is b)\nExplain the difference between == and is."
+  },
+  {
+    q: "What will be the output of:\nprint(5 > 3 and 10 < 4)\nprint(5 > 3 or 10 < 4)\nprint(not (5 > 3))"
+  },
+  {
+    q: "Explain short-circuit evaluation in Python with an example: why does True or (10 / 0 == 0) not cause an error?"
+  },
+  {
+    q: "What will be the output of:\ncart = []\nif cart:\n    print('Proceed to checkout')\nelse:\n    print('Your cart is empty')"
+  },
+  {
+    q: "Write a nested if statement: check if has_account == True, and inside check if is_verified == True. Print 'Access Granted' if both are true, else 'Verification Required'."
+  },
+  {
+    q: "What will be the output of:\nmark = 88\ngrade = 'A' if mark >= 90 else 'B' if mark >= 80 else 'C'\nprint(grade)"
+  },
+  {
+    q: "Write code to check if character '@' and substring '.com' exist inside email string 'user@entryglobe.com' using the 'in' operator."
+  },
+  {
+    q: "What will be the output of:\nval = '123'\nprint(val.isdigit(), val.isalpha())"
+  },
+  {
+    q: "What will be the output of:\nnum = 14\nprint(10 <= num <= 20)"
+  },
+  {
+    q: "In Python, what does type(None) return, and what is None commonly used for?"
+  },
+  {
+    q: "What will be the output of:\nfruits = ['apple', 'cherry']\nfruits.insert(1, 'banana')\nprint(fruits)"
+  },
+  {
+    q: "What will be the output of:\nd = {'a': 1, 'b': 2}\nprint(list(d.items()))"
+  },
+  {
+    q: "What will be the output of:\nname = 'Guido van Rossum'\nparts = name.split()\nprint(parts[0], parts[-1])"
+  },
+  {
+    q: "What will be the output of:\nx = 10\nif x > 5:\n    pass\nelse:\n    print('Less')\nprint('Done')"
+  },
+  {
+    q: "What will be the output of:\nt = (5, 10, 15)\na, b, c = t\nprint(a + b + c)"
+  }
+];
+
+/* ==========================================================================
+   APP STATE & ASSESSMENT ENGINE
+   ========================================================================== */
+let studentData = {};
+let timerInterval;
+let timeLeft = 60 * 60; // 60 minutes = 3600 seconds
+let startTimestamp;
+let isExamActive = false;
+let isResetting = false;
+
+function startAssessment() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+
+  if (!name || !email || !phone) {
+    alert('Please fill out all registration fields.');
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  studentData = { name, email, phone };
+  startTimestamp = new Date();
+  isExamActive = true;
+
+  document.getElementById('screen-reg').classList.add('hidden');
+  document.getElementById('screen-assessment').classList.remove('hidden');
+  document.getElementById('floating-bar').classList.remove('hidden');
+  document.getElementById('student-info-header').textContent = `Candidate: ${name} (${email})`;
+
+  renderMCQs();
+  renderPractice();
+  startTimer();
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderMCQs() {
+  const container = document.getElementById('mcq-container');
+  container.innerHTML = MCQ.map((q, i) => {
+    return `
+      <div class="q-block" id="mcq-block-${i}">
+        <div class="q-header-meta">
+          <span class="q-num"><span class="badge badge-blue">Q${i + 1}</span></span>
+        </div>
+        <div class="q-text">${escapeHtml(q.q).replace(/\n/g, '<br>')}</div>
+        <div class="options">
+          ${q.opts.map((opt, j) => `
+            <label class="opt" id="opt-label-${i}-${j}">
+              <input type="radio" name="mcq-${i}" value="${j}" onchange="onSelectMCQ(${i}, ${j})">
+              <span><strong>${String.fromCharCode(65 + j)}.</strong> ${escapeHtml(opt)}</span>
+            </label>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPractice() {
+  const container = document.getElementById('practice-container');
+  container.innerHTML = PRACTICE.map((p, i) => {
+    return `
+      <div class="practice-q" id="practice-block-${i}">
+        <div class="q-header-meta">
+          <span class="q-num"><span class="badge badge-amber">P${i + 1}</span></span>
+        </div>
+        <div class="q-text">${escapeHtml(p.q).replace(/\n/g, '<br>')}</div>
+        <textarea id="prac-${i}" placeholder="Write your output / explanation / code here..." oninput="updateProgress()"></textarea>
+      </div>
+    `;
+  }).join('');
+}
+
+function onSelectMCQ(qIndex, optIndex) {
+  for (let j = 0; j < 4; j++) {
+    const label = document.getElementById(`opt-label-${qIndex}-${j}`);
+    if (label) {
+      label.classList.toggle('selected', j === optIndex);
+    }
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  let answeredMCQ = 0;
+  MCQ.forEach((_, i) => {
+    if (document.querySelector(`input[name="mcq-${i}"]:checked`)) {
+      answeredMCQ++;
+    }
+  });
+
+  let answeredPractice = 0;
+  PRACTICE.forEach((_, i) => {
+    const el = document.getElementById(`prac-${i}`);
+    if (el && el.value.trim().length > 1) {
+      answeredPractice++;
+    }
+  });
+
+  const totalAnswered = answeredMCQ + answeredPractice;
+  const percent = Math.round((totalAnswered / 100) * 100);
+
+  document.getElementById('progress-fill').style.width = percent + '%';
+  document.getElementById('progress-percent').textContent = `${totalAnswered} / 100 Answered (${percent}%)`;
+  document.getElementById('floating-count').textContent = `${totalAnswered} / 100 Answered`;
+}
+
+/* ==========================================================================
+   STRICT TAB-SWITCH AUTO-SWEEP & RESTART
+   ========================================================================== */
+function sweepAndRestartAssessment() {
+  if (!isExamActive || isResetting) return;
+  isResetting = true;
+
+  // 1. Clear all MCQ radio selections and visual highlights
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.checked = false;
+  });
+  document.querySelectorAll('.opt').forEach(opt => {
+    opt.classList.remove('selected');
+  });
+
+  // 2. Wipe all practice answers
+  document.querySelectorAll('.practice-q textarea').forEach(txt => {
+    txt.value = '';
+  });
+
+  // 3. Reset progress bar and counter
+  updateProgress();
+
+  // 4. Restart timer back to 60:00
+  clearInterval(timerInterval);
+  timeLeft = 60 * 60;
+  startTimestamp = new Date();
+  startTimer();
+
+  // 5. Scroll back to beginning
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // 6. Alert user about penalty
+  alert('⚠️ SECURITY VIOLATION: TAB SWITCH DETECTED!\n\nYou navigated away from the exam tab. As per strict exam integrity guidelines, ALL your answers have been swept clean and your 60-minute assessment has been restarted from the beginning.\n\nPlease remain on this tab until you submit.');
+
+  setTimeout(() => {
+    isResetting = false;
+  }, 1000);
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && isExamActive && !document.getElementById('screen-assessment').classList.contains('hidden')) {
+    sweepAndRestartAssessment();
+  }
+});
+
+window.addEventListener('blur', () => {
+  if (isExamActive && !document.getElementById('screen-assessment').classList.contains('hidden')) {
+    sweepAndRestartAssessment();
+  }
+});
+
+/* ==========================================================================
+   TIMER & SUBMISSION
+   ========================================================================== */
+function startTimer() {
+  const timerValEl = document.getElementById('timer-val');
+  const timerDisplayEl = document.getElementById('timer-display');
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      alert('Time limit reached (60 minutes). Submitting your assessment now!');
+      submitAssessment(true);
+      return;
+    }
+
+    const mins = Math.floor(timeLeft / 60);
+    const secs = timeLeft % 60;
+    timerValEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+    if (timeLeft <= 300) { // 5 minutes warning
+      timerDisplayEl.classList.add('timer-urgent');
+    } else {
+      timerDisplayEl.classList.remove('timer-urgent');
+    }
+  }, 1000);
+}
+
+function getTimeTakenFormatted() {
+  const seconds = Math.floor((new Date() - startTimestamp) / 1000);
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}m ${s}s`;
+}
+
+async function submitAssessment(force = false) {
+  if (!force) {
+    let unattemptedMCQ = 0;
+    MCQ.forEach((_, i) => {
+      if (!document.querySelector(`input[name="mcq-${i}"]:checked`)) unattemptedMCQ++;
+    });
+    
+    let msg = 'Are you sure you want to finish and submit?';
+    if (unattemptedMCQ > 0) {
+      msg = `You have ${unattemptedMCQ} unanswered MCQ question(s). Are you sure you want to submit?`;
+    }
+    if (!confirm(msg)) return;
+  }
+
+  isExamActive = false;
+  clearInterval(timerInterval);
+  document.getElementById('floating-bar').classList.add('hidden');
+
+  let mcqScore = 0;
+  const mcqResults = [];
+
+  MCQ.forEach((q, i) => {
+    const sel = document.querySelector(`input[name="mcq-${i}"]:checked`);
+    const chosen = sel ? parseInt(sel.value) : -1;
+    const isCorrect = chosen === q.ans;
+    if (isCorrect) mcqScore++;
+
+    mcqResults.push({
+      q: q.q,
+      chosen,
+      isCorrect,
+      correctAns: q.ans,
+      opts: q.opts,
+      explain: q.explain
+    });
+  });
+
+  let practiceScore = 0;
+  PRACTICE.forEach((p, i) => {
+    const val = (document.getElementById(`prac-${i}`).value || '').trim();
+    if (val.length >= 2) {
+      practiceScore++;
+    }
+  });
+
+  const totalScore = mcqScore + practiceScore;
+  const timeTaken = getTimeTakenFormatted();
+
+  let grade = 'D', gradeTitle = 'Needs Practice', gradeMsg = '';
+  if (totalScore >= 90) {
+    grade = 'A+';
+    gradeTitle = 'Outstanding! 🎉';
+    gradeMsg = 'Exceptional command over Python origins, operators, methods, and data types.';
+  } else if (totalScore >= 80) {
+    grade = 'A';
+    gradeTitle = 'Great Job! 👏';
+    gradeMsg = 'Strong understanding of Python data structures, outputs, and conditionals.';
+  } else if (totalScore >= 65) {
+    grade = 'B';
+    gradeTitle = 'Good Work! 📚';
+    gradeMsg = 'Good effort. Review dictionary operations and string method nuances to sharpen your skills.';
+  } else if (totalScore >= 50) {
+    grade = 'C';
+    gradeTitle = 'Fair Attempt! 💪';
+    gradeMsg = 'Practice more on indexing, set uniqueness, and nested conditionals.';
+  } else {
+    grade = 'D';
+    gradeTitle = 'Keep Practicing 🔄';
+    gradeMsg = 'Revisit basic operators, data types, and method outputs.';
+  }
+
+  // Display Saving Overlay
+  document.getElementById('screen-assessment').classList.add('hidden');
+  document.getElementById('saving-overlay').classList.add('show');
+
+  // Submit to Google Sheets via Apps Script (no-cors)
+  try {
+    const payload = {
+      name: studentData.name,
+      email: studentData.email,
+      phone: studentData.phone,
+      mcqScore: mcqScore,
+      practiceScore: practiceScore,
+      total: totalScore,
+      grade: grade,
+      timeTaken: timeTaken,
+      submittedAt: new Date().toISOString()
+    };
+
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    document.getElementById('saving-msg').textContent = '✓ Results saved to records!';
+    await new Promise(res => setTimeout(res, 800));
+  } catch (err) {
+    console.error("Sheet save error:", err);
+    document.getElementById('saving-msg').textContent = 'Results ready!';
+    await new Promise(res => setTimeout(res, 600));
+  }
+
+  document.getElementById('saving-overlay').classList.remove('show');
+  document.getElementById('screen-result').classList.remove('hidden');
+
+  document.getElementById('result-student-info').textContent = `${studentData.name} · ${studentData.email} · ${studentData.phone}`;
+  document.getElementById('final-score').textContent = totalScore;
+  document.getElementById('grade-title').textContent = `Grade: ${grade} — ${gradeTitle}`;
+  document.getElementById('grade-msg').textContent = gradeMsg;
+  document.getElementById('mcq-score-display').textContent = `${mcqScore} / 50`;
+  document.getElementById('prac-score-display').textContent = `${practiceScore} / 50`;
+  document.getElementById('time-taken-display').textContent = timeTaken;
+
+  renderMCQReview(mcqResults);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderMCQReview(results) {
+  const container = document.getElementById('mcq-review-list');
+  container.innerHTML = results.map((r, i) => {
+    const isCorrect = r.isCorrect;
+    const borderCol = isCorrect ? 'border-left: 3px solid #10b981;' : 'border-left: 3px solid #ef4444;';
+    return `
+      <div class="q-block" style="${borderCol} background: #0c1220; margin-bottom: 1rem;">
+        <div class="q-header-meta">
+          <span class="badge ${isCorrect ? 'badge-green' : 'badge-amber'}">Q${i + 1}</span>
+          <span style="font-size: 0.8rem; font-weight: 600; color: ${isCorrect ? '#4ade80' : '#f87171'};">
+            ${isCorrect ? '✓ Correct (+1)' : '✗ Incorrect (0)'}
+          </span>
+        </div>
+        <div class="q-text">${escapeHtml(r.q).replace(/\n/g, '<br>')}</div>
+        <div style="font-size: 0.88rem; margin-top: 8px;">
+          <div>
+            ${r.chosen >= 0 
+              ? `<span class="${isCorrect ? 'correct-ans' : 'wrong-ans'}">Your Answer: ${String.fromCharCode(65 + r.chosen)}. ${escapeHtml(r.opts[r.chosen])}</span>`
+              : `<span class="wrong-ans">Not attempted</span>`}
+          </div>
+          ${!isCorrect ? `
+            <div class="ans-reveal">
+              <strong>✓ Correct Answer:</strong> ${String.fromCharCode(65 + r.correctAns)}. ${escapeHtml(r.opts[r.correctAns])}
+            </div>` : ''}
+          <div style="font-size: 0.8rem; color: var(--text-faint); margin-top: 6px;">
+            💡 <em>${escapeHtml(r.explain)}</em>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function escapeHtml(text) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+
+/* ==========================================================================
+   SHORTCUT SAFEGUARDS
+   ========================================================================== */
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 's' || e.key === 'u')) {
+    if (!document.getElementById('screen-assessment').classList.contains('hidden')) {
+      e.preventDefault();
+      alert('Keyboard shortcuts are disabled during the live assessment.');
+    }
+  }
+  if (e.key === 'PrintScreen') {
+    const app = document.getElementById('app');
+    app.style.filter = 'blur(20px)';
+    setTimeout(() => { app.style.filter = ''; }, 2000);
+  }
+});
+
+document.addEventListener('contextmenu', e => {
+  if (!document.getElementById('screen-assessment').classList.contains('hidden')) {
+    e.preventDefault();
+  }
+});
+</script>
+
+</body>
+</html>
